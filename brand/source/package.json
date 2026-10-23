@@ -1,0 +1,15 @@
+{
+  "name": "shloka-brand-source",
+  "private": true,
+  "type": "module",
+  "description": "Generators for the Shloka Care logo set and illustrations. Separate from the website's dependencies.",
+  "scripts": {
+    "fonts": "sh fetch-fonts.sh",
+    "logo": "node build-logo.mjs",
+    "illustrations": "node illus.mjs",
+    "concepts": "node concepts.mjs"
+  },
+  "dependencies": {
+    "opentype.js": "1.3.4"
+  }
+}

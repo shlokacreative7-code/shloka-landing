@@ -1,0 +1,285 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* Dark theme is chosen by data-theme on <html> (set before paint by the script in layout.tsx). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+
+@theme {
+  /*
+   * Only brand colours exist, so off-brand colours can't creep in.
+   * Navy, gold, ivory, white and slate come from the Shloka brief and are used exactly.
+   * Gold is for accents on light backgrounds; on navy it is bright enough for text.
+   */
+  --color-*: initial;
+  --color-navy: #0b1f3a;
+  --color-gold: #c9a227;
+  --color-ivory: #f7f3e8;
+  --color-white: #ffffff;
+  --color-slate: #3a4556;
+  --color-navy-deep: #050f1e;
+  --color-navy-raised: #12294a;
+
+  --shadow-card: 0 1px 2px rgb(11 31 58 / 0.06), 0 28px 56px -24px rgb(11 31 58 / 0.22);
+  --shadow-glow: 0 0 0 1px rgb(201 162 39 / 0.35), 0 24px 70px -20px rgb(201 162 39 / 0.45);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Use these with the motion-safe: variant so they stop for visitors who prefer reduced motion. */
+  --animate-live: live 2.2s ease-out infinite;
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-ecg: ecg 6s linear infinite;
+  --animate-ping-ring: ping-ring 2.4s ease-out infinite;
+
+  @keyframes live {
+    0% {
+      box-shadow: 0 0 0 0 rgb(201 162 39 / 0.6);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 8px rgb(201 162 39 / 0);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -12px;
+    }
+  }
+  /* A bright pulse travelling along a heartbeat line (paths use pathLength="1000"). */
+  @keyframes ecg {
+    from {
+      stroke-dashoffset: 1000;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes ping-ring {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+}
+
+/* Declared after the reset above, which would otherwise clear these. */
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  /* Theme-aware colours: their values swap between :root and [data-theme="dark"] below. */
+  --color-canvas: var(--canvas);
+  --color-canvas-soft: var(--canvas-soft);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-copy: var(--copy);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-field: var(--field);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-band: var(--band);
+  --color-error: var(--error);
+}
+
+:root {
+  --canvas: #ffffff;
+  --canvas-soft: #f7f3e8;
+  --card: #ffffff;
+  --ink: #0b1f3a;
+  --copy: #3a4556;
+  --muted: #556072;
+  --line: #e4dcc8;
+  --field: #858c99; /* 3.4:1 on white */
+  --primary: #0b1f3a;
+  --on-primary: #ffffff;
+  --band: #0b1f3a;
+  --error: #a8281e;
+  color-scheme: light;
+}
+
+/* Dark theme: built on Shloka navy, with ivory text and gold as the primary colour. */
+[data-theme="dark"] {
+  --canvas: #081a31;
+  --canvas-soft: #0b1f3a;
+  --card: #10284a;
+  --ink: #f7f3e8;
+  --copy: rgb(247 243 232 / 0.8);
+  --muted: rgb(247 243 232 / 0.64);
+  --line: rgb(247 243 232 / 0.13);
+  --field: rgb(247 243 232 / 0.45);
+  --primary: #c9a227;
+  --on-primary: #0b1f3a;
+  --band: #050f1e;
+  --error: #f19a8f;
+  color-scheme: dark;
+}
+
+@utility container-x {
+  width: min(100% - 2.5rem, 76rem);
+  margin-inline: auto;
+}
+
+@utility py-section {
+  padding-block: clamp(5rem, 10vw, 8.5rem);
+}
+
+@utility text-lead {
+  font-size: clamp(1.1875rem, 1.6vw, 1.3125rem);
+  line-height: 1.65;
+}
+
+/* Big editorial headings in Instrument Serif. */
+@utility type-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 6rem;
+  }
+
+  /* 18px body text: the audience includes older and less technical visitors. */
+  body {
+    background: var(--canvas);
+    color: var(--copy);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.65;
+    transition: background-color 0.4s;
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  ::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  ::selection {
+    background: rgb(201 162 39 / 0.35);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-gold);
+  }
+}
+
+/* Smooth open and close for the FAQ, where the browser supports animating to height: auto. */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.5s var(--ease-out-expo),
+      content-visibility 0.5s allow-discrete;
+  }
+  details[open]::details-content {
+    height: auto;
+  }
+}
+
+/* Theme switch: the new theme is revealed in a circle from the toggle (see theme-toggle.tsx). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/*
+ * Intro curtain: the logo's arch draws itself, then the curtain lifts. Pure CSS so it plays before
+ * JavaScript loads. It runs once per visit; the head script sets data-intro="skip" afterwards.
+ */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--color-navy);
+  animation: intro-lift 0.9s var(--ease-out-expo) 1.25s forwards;
+  pointer-events: none;
+}
+.intro-arch {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 1s var(--ease-out-expo) 0.1s forwards;
+}
+.intro-s {
+  opacity: 0;
+  animation: intro-fade 0.5s ease-out 0.7s forwards;
+}
+[data-intro="skip"] .intro {
+  display: none;
+}
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes intro-lift {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+  details::details-content {
+    transition: none;
+  }
+}
