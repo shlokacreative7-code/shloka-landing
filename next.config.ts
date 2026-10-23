@@ -1,10 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Build a fully static site into /out, ready to upload to S3 and serve through CloudFront.
+  // Build a fully static site into /out, deployed as Cloudflare Workers static assets (wrangler.jsonc).
   output: "export",
-  // Export pages as folder/index.html (e.g. /privacy/index.html) so clean URLs map onto
-  // files with the small CloudFront Function in the README.
+  // Export pages as folder/index.html (e.g. /privacy/index.html), which static hosts serve at clean URLs.
   trailingSlash: true,
   // The built-in image optimiser needs a server; static hosts serve images as-is.
   images: { unoptimized: true },

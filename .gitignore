@@ -46,3 +46,5 @@ next-env.d.ts
 /brand/source/node_modules/
 /brand/source/fonts/
 /brand/source/.png-build/
+
+.wrangler/

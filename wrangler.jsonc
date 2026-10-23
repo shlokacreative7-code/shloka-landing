@@ -1,0 +1,12 @@
+// Cloudflare Workers config. `npm run build` writes the static site to ./out, and
+// `npx wrangler deploy` uploads it as static assets (no server code, so no OpenNext adapter).
+{
+  // Must match the Worker's name in the Cloudflare dashboard.
+  "name": "shloka-landing",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./out",
+    // Unknown paths get out/404.html with a 404 status.
+    "not_found_handling": "404-page"
+  }
+}
